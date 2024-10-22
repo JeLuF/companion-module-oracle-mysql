@@ -1,0 +1,26 @@
+{
+	"id": "oracle-mysql",
+	"name": "oracle-mysql",
+	"shortname": "mysql",
+	"description": "Oracle MySQL or compatible",
+	"version": "0.0.1",
+	"license": "MIT",
+	"repository": "git+https://github.com/bitfocus/companion-module-oracle-mysql.git",
+	"bugs": "https://github.com/bitfocus/companion-module-oracle-mysql/issues",
+	"maintainers": [
+		{
+			"name": "Jens Frank",
+			"email": "jeluf@mormo.org"
+		}
+	],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../main.js"
+	},
+	"legacyIds": [],
+	"manufacturer": "Oracle",
+	"products": ["MySQL"],
+	"keywords": ["mariadb"]
+}

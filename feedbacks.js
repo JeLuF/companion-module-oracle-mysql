@@ -5,7 +5,7 @@ module.exports = async function (self) {
 		SQLQuery: {
 			type: 'advanced',
 			name: 'Update variable via SQL query',
-			description: 'Execute an SQL query and use its result to set the value of a variable. Variables can be used on any button.',
+			description: 'Execute an SQL query and use its result to set the value of a variable. Variables can be used on any button. The variable will be set to the first field of the first row of the query result.',
 			options: [ {
 				type: 'textinput',
 				label: 'SQL query',
@@ -23,7 +23,6 @@ module.exports = async function (self) {
 				return {}
 			},
 			subscribe: (feedback) => {
-				console.log("SUBSCRIBE")
 				self.subscriptions.set(feedback.id, {
 					variableName: feedback.options.variable,
 					sqlQuery: feedback.options.query,
@@ -32,10 +31,9 @@ module.exports = async function (self) {
 				if (self.isInitialized) {
 					self.updateVariables(feedback.id)
 				}
-				console.log("initialized", self.isInitialized)
 			},
 			unsubscribe: (feedback) => {
-				this.subscriptions.delete(feedback.id)
+				self.subscriptions.delete(feedback.id)
 			}
 		},
 	})
@@ -45,13 +43,9 @@ module.exports = async function (self) {
 	}
 	self.pollInterval = setInterval( async () => {
 		self.subscriptions.forEach( async (subscription) => { 
-			console.log(subscription)
 			var query = await self.parseVariablesInString(subscription.sqlQuery)
-			console.log(query)
 			try {
 				const [results, fields] = await self.connection.query(query)
-				console.log("== RESULTS ==")
-				console.log(results)
 				if (results[0] != undefined) {
 					var value = results[0][Object.keys(results[0])[0]]
 					if (subscription.value != value) {

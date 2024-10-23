@@ -19,7 +19,7 @@ class ModuleInstance extends InstanceBase {
 
 		try {
 			this.updateActions() // export actions
-			this.updateVariableDefinitions() // export variable definitions
+			//this.updateVariableDefinitions() // export variable definitions
 		} catch (err) {
 			this.updateStatus(InstanceStatus.UnknownError, String(err))
 			this.log("error", String(err))
@@ -35,15 +35,19 @@ class ModuleInstance extends InstanceBase {
 			config.pollinterval = 1000
 		}
 		this.config = config
-		var settings = {
-		    host: config.host,
-		    port: config.port,
-		    user: config.user,
+		await this.connect()
+	}
 
-		    database: config.database,
+	async connect() {
+		var settings = {
+		    host: this.config.host,
+		    port: this.config.port,
+		    user: this.config.user,
+
+		    database: this.config.database,
 		}
-		if (config.password != "") {
-		    settings.password = config.password
+		if (this.config.password != "") {
+		    settings.password = this.config.password
 		}
 		try {
 		    this.connection = await mysql.createConnection(settings)
@@ -52,7 +56,7 @@ class ModuleInstance extends InstanceBase {
 		    await this.updateFeedbacks() // export feedbacks
 		} catch (err) {
 		    this.updateStatus(InstanceStatus.ConnectionFailure, String(err))
-		    console.log(err)
+		    this.log("error", String(err))
 		}
 	}
 

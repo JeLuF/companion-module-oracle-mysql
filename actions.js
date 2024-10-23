@@ -18,13 +18,8 @@ module.exports = function (self) {
 			],
 			callback: async (event) => {
 				var query = await self.parseVariablesInString(event.options.query)
-				console.log(query)
 				try {
 					const [results, fields] = await self.connection.query(query)
-					console.log("== RESULTS ==")
-					console.log(results)
-					console.log("== FIELDS ==")
-					console.log(fields)
 				} catch (err) {
 					self.log("error", String(err))
 				}

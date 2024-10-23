@@ -2,7 +2,6 @@ const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@compani
 const UpgradeScripts = require('./upgrades')
 const UpdateActions = require('./actions')
 const UpdateFeedbacks = require('./feedbacks')
-const UpdateVariableDefinitions = require('./variables')
 
 const mysql = require('mysql2/promise');
 

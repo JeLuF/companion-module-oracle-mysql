@@ -1,4 +1,5 @@
-const { combineRgb } = require('@companion-module/base')
+const { combineRgb, InstanceStatus } = require('@companion-module/base')
+
 
 module.exports = async function (self) {
 	self.setFeedbackDefinitions({
@@ -45,7 +46,7 @@ module.exports = async function (self) {
 		self.subscriptions.forEach( async (subscription) => { 
 			var query = await self.parseVariablesInString(subscription.sqlQuery)
 			try {
-				const [results, fields] = await self.connection.query(query)
+				const [results, fields] = await self.pool.query(query)
 				if (results[0] != undefined) {
 					var value = results[0][Object.keys(results[0])[0]]
 					if (subscription.value != value) {
@@ -53,8 +54,15 @@ module.exports = async function (self) {
 						self.setVariableValues({ [subscription.variableName]: value })
 					}
 				}
+				if (self.lastError != 0 && self.lastError + 2 * self.config.pollinterval + 500 < Date.now()) {
+					self.updateStatus(InstanceStatus.Ok)
+					self.lastError = 0
+				}
+					
 			} catch (err) {
-				self.log("error", String(err))
+				self.log("error", JSON.stringify(err))
+				self.updateStatus(InstanceStatus.ConnectionFailure, JSON.stringify(err))
+				self.lastError=Date.now()
 			}
 
 		})

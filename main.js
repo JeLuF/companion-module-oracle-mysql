@@ -8,6 +8,7 @@ const mysql = require('mysql2/promise');
 class ModuleInstance extends InstanceBase {
 	isInitialized = false
 	subscriptions = new Map()
+	lastError = 0 // timestamp of last sql error
 
 	constructor(internal) {
 		super(internal)
@@ -42,14 +43,14 @@ class ModuleInstance extends InstanceBase {
 		    host: this.config.host,
 		    port: this.config.port,
 		    user: this.config.user,
-
 		    database: this.config.database,
+		    waitForConnections: true,
 		}
 		if (this.config.password != "") {
 		    settings.password = this.config.password
 		}
 		try {
-		    this.connection = await mysql.createConnection(settings)
+		    this.pool = await mysql.createPool(settings)
 		    this.updateStatus(InstanceStatus.Ok)
 		    this.isInitialized = true
 		    await this.updateFeedbacks() // export feedbacks

@@ -19,7 +19,7 @@ module.exports = function (self) {
 			callback: async (event) => {
 				var query = await self.parseVariablesInString(event.options.query)
 				try {
-					const [results, fields] = await self.connection.query(query)
+					const [results, fields] = await self.pool.query(query)
 				} catch (err) {
 					self.log("error", String(err))
 				}

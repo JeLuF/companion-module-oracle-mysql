@@ -1,12 +1,12 @@
 {
-	"id": "oracle-mysql",
-	"name": "oracle-mysql",
+	"id": "generic-mysql",
+	"name": "generic-mysql",
 	"shortname": "mysql",
-	"description": "Oracle MySQL or compatible",
+	"description": "MySQL or compatible",
 	"version": "0.0.1",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-oracle-mysql.git",
-	"bugs": "https://github.com/bitfocus/companion-module-oracle-mysql/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-generic-mysql.git",
+	"bugs": "https://github.com/bitfocus/companion-module-generic-mysql/issues",
 	"maintainers": [
 		{
 			"name": "Jens Frank",
@@ -20,7 +20,7 @@
 		"entrypoint": "../main.js"
 	},
 	"legacyIds": [],
-	"manufacturer": "Oracle",
-	"products": ["MySQL"],
-	"keywords": ["mariadb"]
+	"manufacturer": "Generic",
+	"products": ["MySQL", "MariaDB"],
+	"keywords": []
 }
